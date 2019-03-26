@@ -57,7 +57,8 @@ public void leftRightLock{
 如果bucket满了(超过load factor*current capacity)，就要resize。
 ---
 6、*hashMap和hashTable区别*
-对key的hashCode()做hash，然后再计算index;
+
+>对key的hashCode()做hash，然后再计算index;
 如果没碰撞直接放到bucket里；
 如果碰撞了，以链表的形式存在buckets后；
 如果碰撞导致链表过长(大于等于TREEIFY_THRESHOLD)，就把链表转换成红黑树；
@@ -70,9 +71,11 @@ public void leftRightLock{
 * hashMap是基于abstractMap(最大程度的减少接口所需的工作,快速失败-fail-fast机制),而hashTable是基于Dictionary类,是一个将key映射到value的类
 *table是存储Entry的数组,table的索引在逻辑上叫做桶,hashmap是数组加链表结构*
 ---
-7、解决hash冲突的办法
+7、*解决hash冲突的办法*
 * 开放定址法（线性探测再散列，二次探测再散列，伪随机探测再散列）
 * 再哈希法
 * 链地址法
 * 建立一个公共溢出区
+---
+
 
