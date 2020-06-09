@@ -89,3 +89,34 @@ FROM student,sc WHERE student.sid=sc.sid AND cid ='001') S_2 WHERE sc2 > score;
 
 -- 9、查询所有课程成绩小于60分的同学的学号、姓名；
 SELECT sid,sname FROM student a WHERE a.sid NOT IN (SELECT sid FROM sc WHERE score>60);
+-- 10、查询没有学全所有课的同学的学号、姓名；
+SELECT sid,sname FROM student WHERE sid NOT IN (
+SELECT sid FROM sc GROUP BY sid
+HAVING COUNT(*) = (
+SELECT COUNT(DISTINCT(cid)) FROM sc));
+
+SELECT sid,Sname FROM student WHERE sid NOT IN (
+SELECT sid FROM sc GROUP BY sid
+HAVING COUNT(*) = (
+SELECT COUNT(*) FROM course));
+
+SELECT student.sid,student.sname
+FROM student,sc
+WHERE student.sid=sc.sid GROUP BY  student.sid,student.sname 
+HAVING COUNT(cid) <(SELECT COUNT(cid) FROM course);
+-- 11、查询至少有一门课与学号为“1001”的同学所学相同的同学的学号和姓名；
+SELECT sid,sname FROM student WHERE sid IN (
+SELECT sid FROM sc WHERE cid IN (
+SELECT cid FROM sc WHERE sid = '1001'));   
+-- 12、查询与“1001”同学所学课程相同的其他同学学号和姓名；
+SELECT sid,sname FROM student WHERE sid IN(
+SELECT sid FROM sc a WHERE cid IN (SELECT cid FROM sc WHERE sid='1001')
+GROUP BY sid 
+HAVING COUNT(*) = (SELECT COUNT(*) FROM sc WHERE sid='1001')
+);
+-- 14、查询和“1002”号的同学学习的课程完全相同的其他同学学号和姓名；
+SELECT sid,sname FROM student WHERE sid IN (
+SELECT sid FROM sc WHERE sid NOT IN(
+SELECT sid FROM sc WHERE cid NOT IN (SELECT cid FROM sc WHERE sid = '1002'))
+GROUP BY sid
+HAVING COUNT(cid) = (SELECT COUNT(cid) FROM sc WHERE sid = '1002'));
