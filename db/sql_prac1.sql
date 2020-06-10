@@ -120,3 +120,7 @@ SELECT sid FROM sc WHERE sid NOT IN(
 SELECT sid FROM sc WHERE cid NOT IN (SELECT cid FROM sc WHERE sid = '1002'))
 GROUP BY sid
 HAVING COUNT(cid) = (SELECT COUNT(cid) FROM sc WHERE sid = '1002'));
+-- 15、删除学习“叶平”老师课的SC表记录；
+DELETE FROM sc WHERE cid IN (
+SELECT cid FROM course WHERE tid IN (
+SELECT tid FROM teacher WHERE tname='叶平'));
